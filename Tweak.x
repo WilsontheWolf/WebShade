@@ -22,9 +22,13 @@
     if(args.count != 0) {
         NSString *executablePath = args[0];
         if(executablePath) {      
-            BOOL isApplication = [executablePath rangeOfString:@"/Application"].location != NSNotFound && [executablePath rangeOfString:@"Spotlight"].location == NSNotFound; // Fix Spotlight dictionary glitches
+            BOOL isApplication = [executablePath rangeOfString:@"/Application"].location != NSNotFound 
+            && [executablePath rangeOfString:@"Spotlight"].location == NSNotFound // Fix Spotlight dictionary glitches
+            && [executablePath rangeOfString:@"Cydia"].location == NSNotFound; // Cydia crashes for some people and it doesn't even affect it at all.
             if(isApplication) {
                %init(Inject);
+            } else {
+                NSLog(@"[webshade] No injecty");
             }
         }
     }
