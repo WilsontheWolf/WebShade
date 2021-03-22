@@ -22,7 +22,7 @@
     if(args.count != 0) {
         NSString *executablePath = args[0];
         if(executablePath) {      
-            BOOL isApplication = [executablePath rangeOfString:@"/Application"].location != NSNotFound;
+            BOOL isApplication = [executablePath rangeOfString:@"/Application"].location != NSNotFound && [executablePath rangeOfString:@"Spotlight"].location == NSNotFound; // Fix Spotlight dictionary glitches
             if(isApplication) {
                %init(Inject);
             }
