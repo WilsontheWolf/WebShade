@@ -24,7 +24,8 @@
         if(executablePath) {      
             BOOL isApplication = [executablePath rangeOfString:@"/Application"].location != NSNotFound 
             && [executablePath rangeOfString:@"Spotlight"].location == NSNotFound // Fix Spotlight dictionary glitches
-            && [executablePath rangeOfString:@"Cydia"].location == NSNotFound; // Cydia crashes for some people and it doesn't even affect it at all.
+            && [executablePath rangeOfString:@"Cydia"].location == NSNotFound // Cydia crashes for some people and it doesn't even affect it at all.
+            && [executablePath rangeOfString:@"WeChat"].location == NSNotFound; // Fix WeChat chatting page blank black screen issue
             if(isApplication) {
                %init(Inject);
             } else {
