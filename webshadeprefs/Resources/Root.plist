@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>items</key>
+        <array>
+            <dict>
+                <key>cell</key>
+                <string>PSGroupCell</string>
+                <key>footerText</key>
+                <string>Please note that you might have to reload the page for some settings to take affect.</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSGroupCell</string>
+                <key>label</key>
+                <string>Tweak Settings</string>
+                <key>footerText</key>
+                <string>Use this to enable/disable the tweak.</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSSwitchCell</string>
+                <key>default</key>
+                <true/>
+                <key>defaults</key>
+                <string>com.wilsonthewolf.webshadeprefs</string>
+                <key>key</key>
+                <string>enabled</string>
+                <key>label</key>
+                <string>Enabled</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSGroupCell</string>
+                <key>footerText</key>
+                <string>Disabling this causes the tweak to always be dark mode instead of following your system's dark mode.
+If you are on iOS 12 or lower this will have no effect.</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSSwitchCell</string>
+                <key>default</key>
+                <true/>
+                <key>defaults</key>
+                <string>com.wilsonthewolf.webshadeprefs</string>
+                <key>key</key>
+                <string>followSystemTheme</string>
+                <key>label</key>
+                <string>Follow System Theme</string>
+            </dict>
+            <!-- Commented out due to being incomplete -->
+            <!-- <dict>
+                <key>cell</key>
+                <string>PSGroupCell</string>
+                <key>footerText</key>
+                <string>This allows you to control which sites WebShade will work on.</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSLinkCell</string>
+                <key>detail</key>
+                <string>WSPSitesListController</string>
+                <key>isController</key>
+                <true/>
+                <key>label</key>
+                <string>Site Control</string>
+            </dict> -->
+            <dict>
+                <key>cell</key>
+                <string>PSGroupCell</string>
+                <key>label</key>
+                <string>Display Settings</string>
+                <key>footerText</key>
+                <string>These adjust how the background looks.
+It's recommended to use the "Default Sliders" option but if you want to you can enable "Custom Sliders" and then it will use your values.
+Hint: If you want an OLED mode try setting the contrast to 200 and if you want totally white mode set it to -200.</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSSegmentCell</string>
+                <key>default</key>
+                <integer>0</integer>
+                <key>defaults</key>
+                <string>com.wilsonthewolf.webshadeprefs</string>
+                <key>key</key>
+                <string>sliders</string>
+                <key>validValues</key>
+                <array>
+                    <integer>0</integer>
+                    <integer>1</integer>
+                </array>
+                <key>validTitles</key>
+                <array>
+                    <string>Default Sliders</string>
+                    <string>Custom Sliders</string>
+                </array>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSGroupCell</string>
+                <key>label</key>
+                <string>Brightness</string>
+                <key>footerText</key>
+                <string>The brightness controls how bright everything is.
+Setting it to 100 is recommended.
+Lower values makes everything darker and higher values makes everything lighter.</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSSliderCell</string>
+                <key>min</key>
+                <integer>0</integer>
+                <key>max</key>
+                <integer>200</integer>
+                <key>default</key>
+                <integer>100</integer>
+                <key>defaults</key>
+                <string>com.wilsonthewolf.webshadeprefs</string>
+                <key>showValue</key>
+                <true/>
+                <key>key</key>
+                <string>brightness</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSGroupCell</string>
+                <key>label</key>
+                <string>Contrast</string>
+                <key>footerText</key>
+                <string>The contrast controls how much difference the background and foreground are.
+Setting it to 100 or higher is recommended.
+Lower values makes everything greyer and higher values makes everything blacker.</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSSliderCell</string>
+                <key>min</key>
+                <integer>-200</integer>
+                <key>max</key>
+                <integer>200</integer>
+                <key>default</key>
+                <integer>100</integer>
+                <key>defaults</key>
+                <string>com.wilsonthewolf.webshadeprefs</string>
+                <key>showValue</key>
+                <true/>
+                <key>key</key>
+                <string>contrast</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSGroupCell</string>
+                <key>label</key>
+                <string>Grayscale</string>
+                <key>footerText</key>
+                <string>The grayscale controls how much colour there is.
+Setting it to 0 is recommended.
+Increasing this value causes the page to become more gray.
+It does not affect images.</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSSliderCell</string>
+                <key>min</key>
+                <integer>0</integer>
+                <key>max</key>
+                <integer>100</integer>
+                <key>default</key>
+                <integer>0</integer>
+                <key>defaults</key>
+                <string>com.wilsonthewolf.webshadeprefs</string>
+                <key>showValue</key>
+                <true/>
+                <key>key</key>
+                <string>grayscale</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSGroupCell</string>
+                <key>label</key>
+                <string>Sepia</string>
+                <key>footerText</key>
+                <string>The sepia controls how warm the page is.
+Setting it to 0 is recommended.
+Negative values makes everything bluer and positive values makes everything yellowier.</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSSliderCell</string>
+                <key>min</key>
+                <integer>-200</integer>
+                <key>max</key>
+                <integer>200</integer>
+                <key>default</key>
+                <integer>0</integer>
+                <key>defaults</key>
+                <string>com.wilsonthewolf.webshadeprefs</string>
+                <key>showValue</key>
+                <true/>
+                <key>key</key>
+                <string>sepia</string>
+            </dict>
+        </array>
+        <key>title</key>
+        <string>WebShade</string>
+    </dict>
+</plist>

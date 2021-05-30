@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>items</key>
+        <array>
+            <dict>
+                <key>cell</key>
+                <string>PSGroupCell</string>
+                <key>label</key>
+                <string>Site Black/Whitelist</string>
+                <key>footerText</key>
+                <string>Use this to change site mode.
+If set to "All sites" it will run on every site.
+If set to "Not selected sites" it will run on every site not in the list.
+If set to "Not selected sites" it will run only on sites in the list.</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSSegmentCell</string>
+                <key>default</key>
+                <integer>0</integer>
+                <key>defaults</key>
+                <string>com.wilsonthewolf.webshadeprefs</string>
+                <key>key</key>
+                <string>siteBehavior</string>
+                <key>validValues</key>
+                <array>
+                    <integer>0</integer>
+                    <integer>1</integer>
+                    <integer>2</integer>
+                </array>
+                <key>validTitles</key>
+                <array>
+                    <string>All Sites</string>
+                    <string>Not Selected Sites</string>
+                    <string>Only Selected Sites</string>
+                </array>
+            </dict>
+        </array>
+        <key>title</key>
+        <string>Site Control</string>
+    </dict>
+</plist>
