@@ -7,50 +7,31 @@
             <dict>
                 <key>cell</key>
                 <string>PSGroupCell</string>
-                <key>footerText</key>
-                <string>Please note that you might have to reload the page for some settings to take affect.</string>
-            </dict>
-            <dict>
-                <key>cell</key>
-                <string>PSGroupCell</string>
                 <key>label</key>
-                <string>Tweak Settings</string>
+                <string>Website Match</string>
                 <key>footerText</key>
-                <string>Use this to enable/disable the tweak.</string>
+                <string>Any text you put in here. It will match any websites with that text in their URL.
+
+For example "example.com" would match "example.com", "test.example.com" and "example.com/page".
+"cool" would match "cool.com", "example.com/cool" and "apple.com/coolstuff"
+
+Leaving this blank will disable this rule.</string>
             </dict>
             <dict>
                 <key>cell</key>
-                <string>PSSwitchCell</string>
+                <string>PSEditTextCell</string>
                 <key>default</key>
-                <true/>
-                <key>defaults</key>
-                <string>com.wilsonthewolf.webshadeprefs</string>
+                <string></string>
                 <key>key</key>
-                <string>enabled</string>
-                <key>label</key>
-                <string>Enabled</string>
+                <string>websiteMatch</string>
+                <key>placeholder</key>
+                <string>example.com</string>
+                <key>defaults</key>
+                <string>com.wilsonthewolf.webshadesites</string>
             </dict>
             <dict>
                 <key>cell</key>
                 <string>PSGroupCell</string>
-                <key>footerText</key>
-                <string>This allows you to control which sites WebShade will work on.</string>
-            </dict>
-            <dict>
-                <key>cell</key>
-                <string>PSLinkCell</string>
-                <key>detail</key>
-                <string>WSPSiteListController</string>
-                <key>isController</key>
-                <true/>
-                <key>label</key>
-                <string>Site Control</string>
-            </dict>
-            <dict>
-                <key>cell</key>
-                <string>PSGroupCell</string>
-                <key>label</key>
-                <string>Global Settings</string>
                 <key>footerText</key>
                 <string>Disabling this causes the tweak to always be dark mode instead of following your system's dark mode.
 If you are on iOS 12 or lower this will have no effect.</string>
@@ -60,12 +41,12 @@ If you are on iOS 12 or lower this will have no effect.</string>
                 <string>PSSwitchCell</string>
                 <key>default</key>
                 <true/>
-                <key>defaults</key>
-                <string>com.wilsonthewolf.webshadeprefs</string>
                 <key>key</key>
                 <string>followSystemTheme</string>
                 <key>label</key>
                 <string>Follow System Theme</string>
+                <key>defaults</key>
+                <string>com.wilsonthewolf.webshadesites</string>
             </dict>
             <dict>
                 <key>cell</key>
@@ -84,8 +65,6 @@ The basic engine is a much simpler engine. It uses less resources and is more su
                 <string>PSSegmentCell</string>
                 <key>default</key>
                 <integer>0</integer>
-                <key>defaults</key>
-                <string>com.wilsonthewolf.webshadeprefs</string>
                 <key>key</key>
                 <string>engine</string>
                 <key>validValues</key>
@@ -100,6 +79,8 @@ The basic engine is a much simpler engine. It uses less resources and is more su
                     <string>Basic</string>
                     <string>Off</string>
                 </array>
+                <key>defaults</key>
+                <string>com.wilsonthewolf.webshadesites</string>
             </dict>
             <dict>
                 <key>cell</key>
@@ -116,8 +97,6 @@ Hint: If you want an OLED mode try setting the contrast to 200 and if you want t
                 <string>PSSegmentCell</string>
                 <key>default</key>
                 <integer>0</integer>
-                <key>defaults</key>
-                <string>com.wilsonthewolf.webshadeprefs</string>
                 <key>key</key>
                 <string>sliders</string>
                 <key>validValues</key>
@@ -130,6 +109,8 @@ Hint: If you want an OLED mode try setting the contrast to 200 and if you want t
                     <string>Default Sliders</string>
                     <string>Custom Sliders</string>
                 </array>
+                <key>defaults</key>
+                <string>com.wilsonthewolf.webshadesites</string>
             </dict>
             <dict>
                 <key>cell</key>
@@ -150,12 +131,12 @@ Lower values makes everything darker and higher values makes everything lighter.
                 <integer>200</integer>
                 <key>default</key>
                 <integer>100</integer>
-                <key>defaults</key>
-                <string>com.wilsonthewolf.webshadeprefs</string>
                 <key>showValue</key>
                 <true/>
                 <key>key</key>
                 <string>brightness</string>
+                <key>defaults</key>
+                <string>com.wilsonthewolf.webshadesites</string>
             </dict>
             <dict>
                 <key>cell</key>
@@ -176,12 +157,12 @@ Lower values makes everything greyer and higher values makes everything blacker.
                 <integer>200</integer>
                 <key>default</key>
                 <integer>100</integer>
-                <key>defaults</key>
-                <string>com.wilsonthewolf.webshadeprefs</string>
                 <key>showValue</key>
                 <true/>
                 <key>key</key>
                 <string>contrast</string>
+                <key>defaults</key>
+                <string>com.wilsonthewolf.webshadesites</string>
             </dict>
             <dict>
                 <key>cell</key>
@@ -203,12 +184,12 @@ It does not affect images.</string>
                 <integer>100</integer>
                 <key>default</key>
                 <integer>0</integer>
-                <key>defaults</key>
-                <string>com.wilsonthewolf.webshadeprefs</string>
                 <key>showValue</key>
                 <true/>
                 <key>key</key>
                 <string>grayscale</string>
+                <key>defaults</key>
+                <string>com.wilsonthewolf.webshadesites</string>
             </dict>
             <dict>
                 <key>cell</key>
@@ -219,7 +200,7 @@ It does not affect images.</string>
                 <string>The sepia controls how warm the page is.
 Setting it to 0 is recommended.
 Negative values makes everything bluer and positive values makes everything yellowier.
-The basic engine needs a positive sepia value. Super high sepia values might cause inconsistant results.</string>
+The basic engine needs a positive sepia value.</string>
             </dict>
             <dict>
                 <key>cell</key>
@@ -230,30 +211,15 @@ The basic engine needs a positive sepia value. Super high sepia values might cau
                 <integer>200</integer>
                 <key>default</key>
                 <integer>0</integer>
-                <key>defaults</key>
-                <string>com.wilsonthewolf.webshadeprefs</string>
                 <key>showValue</key>
                 <true/>
                 <key>key</key>
                 <string>sepia</string>
+                <key>defaults</key>
+                <string>com.wilsonthewolf.webshadesites</string>
             </dict>
-            <dict>
-                <key>cell</key>
-                <string>PSGroupCell</string>
-                <key>label</key>
-                <string>Links</string>
-            </dict>
-            <dict>
-                <key>cell</key>
-                <string>PSButtonCell</string>
-                <key>label</key>
-                <string>GitHub</string>
-                <key>action</key>
-                <string>openGithub</string>
-            </dict>
-
         </array>
         <key>title</key>
-        <string>WebShade</string>
+        <string>Site Settings</string>
     </dict>
 </plist>

@@ -5,37 +5,72 @@
 %group Inject
     %hook WKWebView
     - (bool)_didCommitLoadForMainFrame {
-        // NSDictionary *settings = [[NSUserDefaults standardUserDefaults]
-        // persistentDomainForName:@"com.wilsonthewolf.webshadeprefs"];
+        NSLog(@"[webshade] Running on %@", self.URL.absoluteString);
+        if (![self.URL.scheme isEqualToString:@"http"] && ![self.URL.scheme isEqualToString:@"https"]) {
+            NSLog(@"[webshade] Not a web page, skipping");
+            return %orig;
+        }
         NSDictionary *settings = [NSDictionary 
         dictionaryWithContentsOfFile:@"/User/Library/Preferences/com.wilsonthewolf.webshadeprefs.plist"];
         BOOL enabled = [[settings valueForKey:@"enabled"] == nil ? @"1" : [settings valueForKey:@"enabled"] boolValue];
         if(enabled) {
-            BOOL followSystemTheme = [[settings valueForKey:@"followSystemTheme"] == nil ? @"1" : [settings valueForKey:@"followSystemTheme"] boolValue];
+            NSDictionary *sites = [NSDictionary 
+            dictionaryWithContentsOfFile:@"/User/Library/Preferences/com.wilsonthewolf.webshadesites.plist"];
+            NSDictionary *details = settings;
+            for(NSString *site in sites) {
+                NSDictionary *value = sites[site];
+                NSString *match = value[@"websiteMatch"];
+                if(match == nil) {
+                    continue;
+                }
+                match = [match stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+                if([match isEqualToString:@""]) {
+                    continue;
+                }
+                match = [match stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+                if([self.URL.absoluteString containsString:match]) {
+                   details = value;
+                   NSLog(@"[webshade] Using ruleset from %@", site);
+                   break;
+                }
+            }
+            BOOL followSystemTheme = [[details valueForKey:@"followSystemTheme"] == nil ? @"1" : [details valueForKey:@"followSystemTheme"] boolValue];
             if([UIDevice currentDevice].systemVersion.floatValue < 13) {
                 followSystemTheme = false;
             }
-            id brightness = @"100";
-            id contrast = @"100";
-            id grayscale = @"0";
-            id sepia = @"0";
-
-            if([[settings valueForKey:@"sliders"] == nil ? @"0" : [settings valueForKey:@"sliders"] boolValue]){
-                NSLog(@"[webshade] non-Default sliders");
-                brightness = [settings valueForKey:@"brightness"] == nil ? brightness : [settings valueForKey:@"brightness"];
-                contrast = [settings valueForKey:@"contrast"] == nil ? contrast : [settings valueForKey:@"contrast"];
-                grayscale = [settings valueForKey:@"grayscale"] == nil ? grayscale : [settings valueForKey:@"grayscale"];
-                sepia = [settings valueForKey:@"sepia"] == nil ? sepia : [settings valueForKey:@"sepia"];
+            NSNumber *engine = [details valueForKey:@"engine"] == nil ? @"0" : [details valueForKey:@"engine"];
+            if (![engine isEqual: @2]) { // Not Off
+                NSLog(@"[webshade] Engine: %@", engine);
+                id brightness = @"100";
+                id contrast = @"100";
+                id grayscale = @"0";
+                id sepia = @"0";
+                id script = @"";
+                if ([engine isEqual: @0]) { // Advanced (Dark reader)
+                    script = [NSString stringWithFormat: @"%@\n%@", 
+                        kDarkReaderScript, 
+                        kDarkReaderRun];
+                } else if ([engine isEqual: @1]) { // Basic
+                    script = kBasicEngineRun;
+                }
+                if([[details valueForKey:@"sliders"] == nil ? @"0" : [details valueForKey:@"sliders"] boolValue]){
+                    brightness = [details valueForKey:@"brightness"] == nil ? brightness : [details valueForKey:@"brightness"];
+                    contrast = [details valueForKey:@"contrast"] == nil ? contrast : [details valueForKey:@"contrast"];
+                    grayscale = [details valueForKey:@"grayscale"] == nil ? grayscale : [details valueForKey:@"grayscale"];
+                    sepia = [details valueForKey:@"sepia"] == nil ? sepia : [details valueForKey:@"sepia"];
+                }
+                id jsOptions = [NSString stringWithFormat:@"{dynamic: %@, brightness: %@, contrast: %@, grayscale: %@, sepia: %@}", 
+                followSystemTheme ? @"true" : @"false",
+                brightness, contrast, grayscale, sepia];
+                NSLog(@"[webshade] Options: %@", jsOptions);
+                [self evaluateJavaScript: [NSString stringWithFormat:@"{\nconst options = %@;\n%@\n}", jsOptions, script]
+                completionHandler: nil];
+                NSLog(@"[webshade] Injected");
+            } else {
+                NSLog(@"[webshade] Engine off");
             }
-
-            NSLog(@"[webshade]DarkReader.%@({brightness: %@,contrast: %@,grayscale: %@,sepia: %@})", 
-            followSystemTheme ? @"auto" : @"enable",
-            brightness, contrast, grayscale, sepia);
-            [self evaluateJavaScript: [NSString stringWithFormat: @"%@\nDarkReader.%@({brightness: %@,contrast: %@,grayscale: %@,sepia: %@})", 
-            kDarkReaderScript, 
-            followSystemTheme ? @"auto" : @"enable",
-            brightness, contrast, grayscale, sepia]
-            completionHandler: nil];
+        } else {
+            NSLog(@"[webshade] Disabled");
         }
         return %orig;
     }
@@ -56,7 +91,7 @@
             if(isApplication) {
                %init(Inject);
             } else {
-                NSLog(@"[webshade] No injecty");
+                NSLog(@"[webshade] Not injecting");
             }
         }
     }

@@ -10,8 +10,8 @@
 		<string>PSLinkCell</string>
 		<key>detail</key>
 		<string>WSPRootListController</string>
-		<key>icon</key>
-		<string>icon.png</string>
+		<!-- <key>icon</key>
+		<string>icon.png</string> -->
 		<key>isController</key>
 		<true/>
 		<key>label</key>
