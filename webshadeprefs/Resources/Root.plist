@@ -192,7 +192,7 @@ Lower values makes everything greyer and higher values makes everything blacker.
                 <string>The grayscale controls how much colour there is.
 Setting it to 0 is recommended.
 Increasing this value causes the page to become more gray.
-It does not affect images.</string>
+It does not affect images on the advanced engine.</string>
             </dict>
             <dict>
                 <key>cell</key>
