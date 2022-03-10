@@ -219,7 +219,5 @@ The basic engine needs a positive sepia value. Super high sepia values might cau
                 <string>com.wilsonthewolf.webshadesites</string>
             </dict>
         </array>
-        <key>title</key>
-        <string>Site Settings</string>
     </dict>
 </plist>
