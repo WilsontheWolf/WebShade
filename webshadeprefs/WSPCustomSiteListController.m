@@ -6,6 +6,8 @@
         if (!_specifiers) {
             self.selectedSite = self.title;
             _specifiers = [self loadSpecifiersFromPlistName:@"Site" target:self];
+            // Loading the plist makes the title blank.
+            self.title = self.selectedSite;
         }
         return _specifiers;
     }
