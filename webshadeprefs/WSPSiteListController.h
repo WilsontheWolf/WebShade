@@ -4,6 +4,6 @@
 
 @interface WSPSiteListController : PSListController
 @property (nonatomic, retain) NSMutableDictionary *sites;
-- (void)loadSites;
-- (void)loadData;
+    - (void)loadSites;
+    - (void)loadData;
 @end
