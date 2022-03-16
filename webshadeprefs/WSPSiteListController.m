@@ -74,7 +74,7 @@
                 }]];
                 [self presentViewController:alertController animated:YES completion:nil];
             } else {
-                NSLog(@"[webshadeprefs] Site added: %@",text);
+                NSLog(@"[webshade-prefs] Site added: %@",text);
                 PSSpecifier *specifier = [PSSpecifier preferenceSpecifierNamed:text target:self set:nil get:nil detail:objc_getClass("WSPCustomSiteListController") cell:PSLinkCell edit:nil];
                 [specifier setProperty:@YES forKey:@"enabled"];
                 [self insertSpecifier:specifier atIndex:1 animated:YES];
@@ -93,8 +93,8 @@
 			PSSpecifier *specifierToBeRemoved = [self specifierAtIndexPath:indexPath];
 			[self removeSpecifier:specifierToBeRemoved animated:YES];
 			[self.sites removeObjectForKey:[specifierToBeRemoved name]];
-            NSLog(@"[webshadeprefs] Site deleted: %@", [specifierToBeRemoved name]);
-            NSLog(@"[webshadeprefs] self.sites: %@", self.sites);
+            NSLog(@"[webshade-prefs] Site deleted: %@", [specifierToBeRemoved name]);
+            NSLog(@"[webshade-prefs] self.sites: %@", self.sites);
 
 			[self saveSites];
 		}
@@ -110,7 +110,7 @@
                 continue;
             }
             NSString *name = [specifier name];
-            NSLog(@"[webshadeprefs] Saving site: %@", name);
+            NSLog(@"[webshade-prefs] Saving site: %@", name);
             if(!self.sites[name]) {
                 [data setObject:@{} forKey:name];
             } else {
@@ -118,7 +118,7 @@
             }
 		}
 
-        NSLog(@"[webshadeprefs] Saving sites: %@", data);
+        NSLog(@"[webshade-prefs] Saving sites: %@", data);
         [data writeToFile:path atomically:YES];
 	}
 

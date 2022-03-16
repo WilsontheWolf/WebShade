@@ -1,11 +1,11 @@
 Package: com.wilsonthewolf.webshade
 Name: WebShade
-Version: 0.0.3
+Version: 0.0.4
 Architecture: iphoneos-arm
 Description: Make your websites dark!
 Maintainer: WilsontheWolf
 Author: WilsontheWolf
 Section: Tweaks
-Depends: mobilesubstrate (>= 0.9.5000)
+Depends: mobilesubstrate (>= 0.9.5000), preferenceloader
 Depiction: https://wilson.antti.codes/repo/depictions/web/com.wilsonthewolf.webshade
 SileoDepiction: https://wilson.antti.codes/repo/depictions/sileo/com.wilsonthewolf.webshade

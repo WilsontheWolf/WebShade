@@ -15,6 +15,8 @@
 For example "example.com" would match "example.com", "test.example.com" and "example.com/page".
 "cool" would match "cool.com", "example.com/cool" and "apple.com/coolstuff"
 
+You can add multiple matches by seperating them by a pipe (|) character. For example "example.com|google.com" would match "example.com" and "google.com".
+
 Leaving this blank will disable this rule.</string>
             </dict>
             <dict>
@@ -47,6 +49,24 @@ If you are on iOS 12 or lower this will have no effect.</string>
                 <string>Follow System Theme</string>
                 <key>defaults</key>
                 <string>com.wilsonthewolf.webshadesites</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSGroupCell</string>
+                <key>footerText</key>
+                <string>This causes websites to have a pure black backround.</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSSwitchCell</string>
+                <key>default</key>
+                <false/>
+                <key>defaults</key>
+                <string>com.wilsonthewolf.webshadeprefs</string>
+                <key>key</key>
+                <string>oled</string>
+                <key>label</key>
+                <string>Enable OLED Mode</string>
             </dict>
             <dict>
                 <key>cell</key>
@@ -89,8 +109,7 @@ The basic engine is a much simpler engine. It uses less resources and is more su
                 <string>Display Settings</string>
                 <key>footerText</key>
                 <string>These adjust how the background looks.
-It's recommended to use the "Default Sliders" option but if you want to you can enable "Custom Sliders" and then it will use your values.
-Hint: If you want an OLED mode try setting the contrast to 200 and if you want totally white mode set it to -200.</string>
+It's recommended to use the "Default Sliders" option but if you want to you can enable "Custom Sliders" and then it will use your values.</string>
             </dict>
             <dict>
                 <key>cell</key>

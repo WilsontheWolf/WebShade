@@ -31,7 +31,7 @@
         NSString *path = @"/User/Library/Preferences/com.wilsonthewolf.webshadesites.plist";
         NSDictionary *sitePrefs = [NSDictionary dictionaryWithContentsOfFile:path] == nil ? [NSDictionary dictionary] : [NSDictionary dictionaryWithContentsOfFile:path];
         self.site = sitePrefs[self.selectedSite] == nil ? [NSMutableDictionary dictionary] : [sitePrefs[self.selectedSite] mutableCopy];
-        NSLog(@"[webshadeprefs] Site loaded: %@", self.selectedSite);
+        NSLog(@"[webshade-prefs] Site loaded: %@", self.selectedSite);
     }
 
 @end
