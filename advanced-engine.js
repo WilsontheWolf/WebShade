@@ -7,10 +7,13 @@
 if (wsToken) {
     if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.WebShadeCorsFetch) {
         const postMessage = window.webkit.messageHandlers.WebShadeCorsFetch.postMessage.bind(window.webkit.messageHandlers.WebShadeCorsFetch);
-        // This checks if the handler is native code. If it isn't this 
+        // This checks if the handler is native code. and if theres already
+        // a response. If the handler isn't native code, this 
         // means its most likely being impersonated by a script.
+        // If the response is already set, then we can assume that
+        // someone is messing with something, or we're already injected (?)
         // If this is the case, we use the default fetch to prevent token leakage.
-        if (/\{\s+\[native code\]/.test(Function.prototype.toString.call(postMessage))) {
+        if (/\{\s+\[native code\]/.test(Function.prototype.toString.call(postMessage)) && !window.webkit.WebShadeCorsFetchResponse) {
             const promises = {};
             const fakeFetch = (url) => {
                 const id = Math.random().toString(36).slice(2);
@@ -40,6 +43,9 @@ if (wsToken) {
                 }
                 delete promises[id];
             };
+            // Attempt to prevent someone from messing with the response handler.
+            // It's probably able to be worked around, but it should help.
+            Object.freeze(window.webkit);
             DarkReader.setFetchMethod(fakeFetch);
         }
     }

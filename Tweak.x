@@ -172,8 +172,8 @@
                     if([match isEqualToString:@""]) {
                         continue;
                     }
-                    match = [match stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-                    if([self.URL.absoluteString containsString:match]) {
+                    match = [[match stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]] lowercaseString];
+                    if([[self.URL.absoluteString lowercaseString] containsString:match]) {
                         finalMatch = match;
                         break;
                     }

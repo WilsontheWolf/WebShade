@@ -34,4 +34,8 @@
         NSLog(@"[webshade-prefs] Site loaded: %@", self.selectedSite);
     }
 
+    -(void)_returnKeyPressed:(id)arg1 {
+        [self.view endEditing:YES];
+    }
+    
 @end

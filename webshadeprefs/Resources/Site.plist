@@ -28,6 +28,8 @@ Leaving this blank will disable this rule.</string>
                 <string>websiteMatch</string>
                 <key>placeholder</key>
                 <string>example.com</string>
+                <key>noAutoCorrect</key>
+                <true/>
                 <key>defaults</key>
                 <string>com.wilsonthewolf.webshadesites</string>
             </dict>
