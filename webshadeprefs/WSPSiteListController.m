@@ -27,7 +27,7 @@
     -(void)loadSites {
         NSMutableArray *siteSpecifiers = [[NSMutableArray alloc] init];
         PSSpecifier *groupSpecifier = [PSSpecifier preferenceSpecifierNamed:@"Custom Site Rules" target:self set:nil get:nil detail:nil cell:PSGroupCell edit:nil];
-        [groupSpecifier setProperty:@"Swipe to delete sites." forKey:@"footerText"];
+        [groupSpecifier setProperty:@"Swipe to delete or rename sites." forKey:@"footerText"];
         [siteSpecifiers addObject:groupSpecifier];
 
         for(NSString *site in self.sites) {
