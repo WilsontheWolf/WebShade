@@ -1,8 +1,8 @@
 #include <objc/runtime.h>
 #include "WSPSiteListController.h"
-// Special thanks to @LacertosusRepo @denialpan @AzzouDuGhetto @dev_galactic for this
+// Special thanks to @LacertosusRepo @denialpan @AzzouDuGhetto @Galactic-Dev for this
 // No way I could do this myself. 
-// If your looking to do something similar yourself, trust me 
+// If your looking to do something similar yourself, trust me
 // Turn away while you still can.
 
 @implementation WSPSiteListController
@@ -87,19 +87,67 @@
         [self presentViewController:alertController animated:YES completion:nil];
 	}
 
-    // Delete a site
-	-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-        if(editingStyle == UITableViewCellEditingStyleDelete) {
-			PSSpecifier *specifierToBeRemoved = [self specifierAtIndexPath:indexPath];
-			[self removeSpecifier:specifierToBeRemoved animated:YES];
-			[self.sites removeObjectForKey:[specifierToBeRemoved name]];
-            NSLog(@"[webshade-prefs] Site deleted: %@", [specifierToBeRemoved name]);
-            NSLog(@"[webshade-prefs] self.sites: %@", self.sites);
+    - (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath { 
+        UIContextualAction *deleteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:@"Delete" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+            PSSpecifier *specifierToBeRemoved = [self specifierAtIndexPath:indexPath];
+			[self deleteSite:specifierToBeRemoved];
+        }];
+        UIContextualAction *updateAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal title:@"Rename" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+            PSSpecifier *specifier = [self specifierAtIndexPath:indexPath];
+            UIAlertController * alertController = [UIAlertController alertControllerWithTitle: @"Rename Site Rule"
+                                                                                        message: @"Please input the new name."
+                                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+                textField.placeholder = [specifier name];
+                textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+            }];
+            [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            }]];
 
-			[self saveSites];
-		}
-	}
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                NSArray *textfields = alertController.textFields;
+                UITextField *namefield = textfields[0];
+                NSString *text = [namefield.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+                NSString *error = nil;
+                if(text.length == 0) {
+                    error = @"Please enter a name.";
+                } else if([self.sites objectForKey:text]) {
+                    error = @"A site with that name already exists.";
+                }
+                if(error != nil) {
+                    UIAlertController * alertController = [UIAlertController alertControllerWithTitle: @"Error"
+                                                                                                message: error
+                                                                                         preferredStyle:UIAlertControllerStyleAlert];
+                    [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                    }]];
+                    [self presentViewController:alertController animated:YES completion:nil];
+                } else {
+                    NSLog(@"[webshade-prefs] Site updated: %@",text);
+                    [specifier setName:text];
+                    // Update display name
+                    [self reloadSpecifier:specifier];
+                    [self saveSites];
+                }
+            }];
+            [alertController addAction:okAction];
+            alertController.preferredAction = okAction;
+            [self presentViewController:alertController animated:YES completion:nil];
+            completionHandler(YES);
+        }];
+        updateAction.backgroundColor = [UIColor systemYellowColor];
+        
+        UISwipeActionsConfiguration *config = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction, updateAction]];
+        return config;
+    };
 
+    -(void)deleteSite:(PSSpecifier *)specifier {
+        [self removeSpecifier:specifier animated:YES];
+        [self.sites removeObjectForKey:[specifier name]];
+        NSLog(@"[webshade-prefs] Site deleted: %@", [specifier name]);
+        NSLog(@"[webshade-prefs] self.sites: %@", self.sites);
+        [self saveSites];
+    }
+    
 	-(void)saveSites {
         NSString *path = @"/User/Library/Preferences/com.wilsonthewolf.webshadesites.plist";
         NSMutableDictionary *data =[NSMutableDictionary dictionary];
