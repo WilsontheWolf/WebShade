@@ -22,7 +22,10 @@
     }
 
     -(id)readPreferenceValue:(PSSpecifier *)specifier {
-        return self.site[specifier.properties[@"key"]] ?: specifier.properties[@"default"];
+        return self.site[specifier.properties[@"key"]] ?: 
+        self.global[@"useGlobalAsDefault"] == nil || [self.global[@"useGlobalAsDefault"] boolValue] ?
+        self.global[specifier.properties[@"key"]] :
+        specifier.properties[@"default"];
     }
 
     -(void)viewDidLoad {
@@ -30,6 +33,8 @@
         
         NSString *path = @"/User/Library/Preferences/com.wilsonthewolf.webshadesites.plist";
         NSDictionary *sitePrefs = [NSDictionary dictionaryWithContentsOfFile:path] == nil ? [NSDictionary dictionary] : [NSDictionary dictionaryWithContentsOfFile:path];
+        NSString *globalPath = @"/User/Library/Preferences/com.wilsonthewolf.webshadeprefs.plist";
+        self.global = [NSDictionary dictionaryWithContentsOfFile:globalPath] == nil ? [NSDictionary dictionary] : [NSDictionary dictionaryWithContentsOfFile:globalPath];
         self.site = sitePrefs[self.selectedSite] == nil ? [NSMutableDictionary dictionary] : [sitePrefs[self.selectedSite] mutableCopy];
         NSLog(@"[webshade-prefs] Site loaded: %@", self.selectedSite);
     }

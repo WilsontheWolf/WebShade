@@ -90,7 +90,11 @@
     - (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath { 
         UIContextualAction *deleteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:@"Delete" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
             PSSpecifier *specifierToBeRemoved = [self specifierAtIndexPath:indexPath];
-			[self deleteSite:specifierToBeRemoved];
+			[self removeSpecifier:specifierToBeRemoved animated:YES];
+            [self.sites removeObjectForKey:[specifierToBeRemoved name]];
+            NSLog(@"[webshade-prefs] Site deleted: %@", [specifierToBeRemoved name]);
+            NSLog(@"[webshade-prefs] self.sites: %@", self.sites);
+            [self saveSites];
         }];
         UIContextualAction *updateAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal title:@"Rename" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
             PSSpecifier *specifier = [self specifierAtIndexPath:indexPath];
@@ -126,7 +130,6 @@
                     NSDictionary *site = [self.sites objectForKey:[specifier name]];
                     [self.sites setObject:site forKey:text]; 
                     [specifier setName:text];
-                    // Update display name
                     [self reloadSpecifier:specifier];
                     [self saveSites];
                 }
@@ -141,14 +144,6 @@
         UISwipeActionsConfiguration *config = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction, updateAction]];
         return config;
     };
-
-    -(void)deleteSite:(PSSpecifier *)specifier {
-        [self removeSpecifier:specifier animated:YES];
-        [self.sites removeObjectForKey:[specifier name]];
-        NSLog(@"[webshade-prefs] Site deleted: %@", [specifier name]);
-        NSLog(@"[webshade-prefs] self.sites: %@", self.sites);
-        [self saveSites];
-    }
     
 	-(void)saveSites {
         NSString *path = @"/User/Library/Preferences/com.wilsonthewolf.webshadesites.plist";

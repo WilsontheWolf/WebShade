@@ -3,5 +3,6 @@
 
 @interface WSPCustomSiteListController : PSListController
     @property (strong, nonatomic) NSMutableDictionary *site;
+    @property (strong, nonatomic) NSDictionary *global;
     @property (strong, nonatomic) NSString *selectedSite;
 @end

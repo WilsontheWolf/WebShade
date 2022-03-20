@@ -124,6 +124,41 @@
             [self informChild:id fromView: [message webView] withResponse:@"access denied" ofType:@"error"];
         }
     }
+
+    - (id)getValueForKey:(NSString *)keyValue fromSettings:(NSDictionary *)settings fromDetails:(NSDictionary *)details usingGlobal:(BOOL)global useGlobalAsDefault:(BOOL)useGlobalAsDefault {
+    id value = [details valueForKey:keyValue];
+    if(value == nil && !global && useGlobalAsDefault) {
+        value = [settings valueForKey:keyValue];
+    }
+    if(value == nil) {
+        // Handle defaults
+        if([keyValue isEqualToString:@"engine"]) {
+            return @0;
+        } 
+        if([keyValue isEqualToString:@"followSystemTheme"]) {
+            return @"1";
+        }
+        if([keyValue isEqualToString:@"oled"]) {
+            return @"0";
+        }
+        if([keyValue isEqualToString:@"sliders"]) {
+            return @"0";
+        }
+        if([keyValue isEqualToString:@"brightness"]) {
+            return @"100";
+        }
+        if([keyValue isEqualToString:@"contrast"]) {
+            return @"100";
+        }
+        if([keyValue isEqualToString:@"grayscale"]) {
+            return @"0";
+        }
+        if([keyValue isEqualToString:@"sepia"]) {
+            return @"0";
+        }
+    }
+    return value;
+}
     @end
 
     static WSHelperObject *helper = nil;
@@ -159,6 +194,8 @@
             NSDictionary *sites = [NSDictionary 
             dictionaryWithContentsOfFile:@"/User/Library/Preferences/com.wilsonthewolf.webshadesites.plist"];
             NSDictionary *details = settings;
+            BOOL usingGlobal = YES;
+            BOOL useGlobalAsDefault = [[settings valueForKey:@"useGlobalAsDefault"] == nil ? @"1" : [settings valueForKey:@"useGlobalAsDefault"] boolValue];
             for(NSString *site in sites) {
                 NSDictionary *value = sites[site];
                 NSString *matchString = value[@"websiteMatch"];
@@ -182,11 +219,12 @@
                     continue;
                 }
                 details = value;
+                usingGlobal = NO;
                 NSLog(@"[webshade-core] Using ruleset from %@. Matched %@", site, finalMatch);
                 break;
             }
             BOOL canUseFetch = [[settings valueForKey:@"allowFetch"] == nil ? @"1" : [settings valueForKey:@"allowFetch"] boolValue];
-            NSNumber *engine = [details valueForKey:@"engine"] == nil ? @0 : [details valueForKey:@"engine"];
+            NSNumber *engine = [helper getValueForKey:@"engine" fromSettings:settings fromDetails:details usingGlobal:usingGlobal useGlobalAsDefault:useGlobalAsDefault];
             if (![engine isEqual: @2]) { // Not Off
                 NSLog(@"[webshade-core] Engine: %@", engine);
                 NSString *brightness = @"100";
@@ -194,8 +232,8 @@
                 NSString *grayscale = @"0";
                 NSString *sepia = @"0";
                 NSString *script = @"";
-                BOOL followSystemTheme = [[details valueForKey:@"followSystemTheme"] == nil ? @"1" : [details valueForKey:@"followSystemTheme"] boolValue];
-                BOOL oled = [[details valueForKey:@"oled"] == nil ? @"0" : [details valueForKey:@"oled"] boolValue];
+                BOOL followSystemTheme = [[helper getValueForKey:@"followSystemTheme" fromSettings:settings fromDetails:details usingGlobal:usingGlobal useGlobalAsDefault:useGlobalAsDefault] boolValue];
+                BOOL oled = [[helper getValueForKey:@"oled" fromSettings:settings fromDetails:details usingGlobal:usingGlobal useGlobalAsDefault:useGlobalAsDefault] boolValue];
                 if([UIDevice currentDevice].systemVersion.floatValue < 13) {
                     followSystemTheme = false;
                 }
@@ -206,11 +244,11 @@
                 } else if ([engine isEqual: @1]) { // Basic
                     script = kBasicEngineRun;
                 }
-                if([[details valueForKey:@"sliders"] == nil ? @"0" : [details valueForKey:@"sliders"] boolValue]){
-                    brightness = [details valueForKey:@"brightness"] == nil ? brightness : [details valueForKey:@"brightness"];
-                    contrast = [details valueForKey:@"contrast"] == nil ? contrast : [details valueForKey:@"contrast"];
-                    grayscale = [details valueForKey:@"grayscale"] == nil ? grayscale : [details valueForKey:@"grayscale"];
-                    sepia = [details valueForKey:@"sepia"] == nil ? sepia : [details valueForKey:@"sepia"];
+                if([[helper getValueForKey:@"sliders" fromSettings:settings fromDetails:details usingGlobal:usingGlobal useGlobalAsDefault:useGlobalAsDefault] boolValue]) {
+                    brightness = [helper getValueForKey:@"brightness" fromSettings:settings fromDetails:details usingGlobal:usingGlobal useGlobalAsDefault:useGlobalAsDefault];
+                    contrast = [helper getValueForKey:@"contrast" fromSettings:settings fromDetails:details usingGlobal:usingGlobal useGlobalAsDefault:useGlobalAsDefault];
+                    grayscale = [helper getValueForKey:@"grayscale" fromSettings:settings fromDetails:details usingGlobal:usingGlobal useGlobalAsDefault:useGlobalAsDefault];
+                    sepia = [helper getValueForKey:@"sepia" fromSettings:settings fromDetails:details usingGlobal:usingGlobal useGlobalAsDefault:useGlobalAsDefault];
                 }
                 NSString *jsOptions = [NSString stringWithFormat:@"{dynamic: %@, brightness: %@, contrast: %@, grayscale: %@, sepia: %@, OLED: %@}", 
                 followSystemTheme ? @"true" : @"false",
