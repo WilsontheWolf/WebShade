@@ -64,7 +64,7 @@ If you are on iOS 12 or lower this will have no effect.</string>
                 <key>default</key>
                 <false/>
                 <key>defaults</key>
-                <string>com.wilsonthewolf.webshadeprefs</string>
+                <string>com.wilsonthewolf.webshadesites</string>
                 <key>key</key>
                 <string>oled</string>
                 <key>label</key>
