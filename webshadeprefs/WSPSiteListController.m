@@ -95,6 +95,7 @@
             NSLog(@"[webshade-prefs] Site deleted: %@", [specifierToBeRemoved name]);
             NSLog(@"[webshade-prefs] self.sites: %@", self.sites);
             [self saveSites];
+            completionHandler(YES);
         }];
         UIContextualAction *updateAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal title:@"Rename" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
             PSSpecifier *specifier = [self specifierAtIndexPath:indexPath];
