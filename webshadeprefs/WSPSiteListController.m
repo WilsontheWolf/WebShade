@@ -128,7 +128,7 @@
                     [self presentViewController:alertController animated:YES completion:nil];
                 } else {
                     NSLog(@"[webshade-prefs] Site updated: %@",text);
-                    NSDictionary *site = [self.sites objectForKey:[specifier name]];
+                    NSDictionary *site = [self.sites objectForKey:[specifier name]] ?: @{};
                     [self.sites setObject:site forKey:text]; 
                     [specifier setName:text];
                     [self reloadSpecifier:specifier];
