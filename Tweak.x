@@ -6,6 +6,7 @@
 
     @interface WSHelperObject:NSObject <WKScriptMessageHandler> {
         NSString *key;
+        NSOperationQueue *queue;
     }
     @end
 
@@ -14,6 +15,8 @@
     -(id)init {
         self = [super init];
         key = [[NSProcessInfo processInfo] globallyUniqueString];
+        queue = [[NSOperationQueue alloc] init];
+        queue.maxConcurrentOperationCount = 20;
         return self;
     }
 
@@ -93,32 +96,34 @@
             NSURLSessionConfiguration *defaultSessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
             NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultSessionConfiguration];
 
-            NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
+            [queue addOperationWithBlock: ^{
+                NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
 
-            [urlRequest setHTTPMethod:@"GET"];
+                [urlRequest setHTTPMethod:@"GET"];
 
-            __block BOOL done = NO;
-            NSURLSessionDataTask *dataTask = [defaultSession dataTaskWithRequest:urlRequest completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                if(error) {
-                    NSLog(@"[webshade-fetch] error %@", error);
-                    NSLog(@"[webshade-fetch] error %@", url);
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self informChild:id fromView: [message webView] withResponse:[error localizedDescription] ofType:@"error"];
-                    });
-                    
-                } else {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self informChild:id fromView: [message webView] withResponse:[data base64EncodedStringWithOptions:0] ofType:@"data"];
-                    });
-                }
-                done = YES;
+                __block BOOL done = NO;
+                NSURLSessionDataTask *dataTask = [defaultSession dataTaskWithRequest:urlRequest completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                    if(error) {
+                        NSLog(@"[webshade-fetch] error %@", error);
+                        NSLog(@"[webshade-fetch] error %@", url);
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self informChild:id fromView: [message webView] withResponse:[error localizedDescription] ofType:@"error"];
+                        });
+
+                    } else {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self informChild:id fromView: [message webView] withResponse:[data base64EncodedStringWithOptions:0] ofType:@"data"];
+                        });
+                    }
+                    done = YES;
+                }];
+                [dataTask resume];
+
+                while (!done) {
+                    NSDate *date = [[NSDate alloc] initWithTimeIntervalSinceNow:0.1];
+                    [[NSRunLoop currentRunLoop] runUntilDate:date];
+                    }
             }];
-            [dataTask resume];
-
-            while (!done) {
-                NSDate *date = [[NSDate alloc] initWithTimeIntervalSinceNow:0.1];
-                [[NSRunLoop currentRunLoop] runUntilDate:date];
-            }
         } else {
             NSLog(@"[webshade-fetch] invalid token: %@", token);
             [self informChild:id fromView: [message webView] withResponse:@"access denied" ofType:@"error"];
