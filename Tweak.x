@@ -16,7 +16,7 @@
         self = [super init];
         key = [[NSProcessInfo processInfo] globallyUniqueString];
         queue = [[NSOperationQueue alloc] init];
-        queue.maxConcurrentOperationCount = 20;
+        queue.maxConcurrentOperationCount = 100;
         return self;
     }
 

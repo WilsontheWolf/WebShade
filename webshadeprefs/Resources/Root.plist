@@ -50,7 +50,7 @@
                 <key>cell</key>
                 <string>PSGroupCell</string>
                 <key>footerText</key>
-                <string>When this is enabled, webshade will use the global setting for unknown values in site control. When disabled webshade will use its build in defaults.</string>
+                <string>When this is enabled, webshade will use the global setting for unknown values in site control. When disabled webshade will use its built in defaults.</string>
             </dict>
             <dict>
                 <key>cell</key>

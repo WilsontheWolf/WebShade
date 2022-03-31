@@ -1,6 +1,6 @@
 Package: com.wilsonthewolf.webshade
 Name: WebShade
-Version: 0.0.5
+Version: 0.0.6
 Architecture: iphoneos-arm
 Description: Make your websites dark!
 Maintainer: WilsontheWolf

@@ -23,7 +23,7 @@ if (wsToken) {
                 promises[id].timeout = setTimeout(() => {
                     promises[id].reject(new Error('No response'));
                     delete promises[id];
-                }, 100000); // 100 secs
+                }, 100000 + 1000 * Object.keys(promises).length); // 100 + how many fetches in the queue secs
 
                 postMessage({ url: encodeURI(url), id, token: wsToken });
                 return promise;
